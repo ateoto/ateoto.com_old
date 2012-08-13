@@ -29,7 +29,7 @@ def collect_static(clear = False):
     if clear: clear_cmd = '-c'
     with cd(env.deploy_dir):
         with prefix('workon %s' % (env.virtualenv)):
-            run('django-admin.py collectstatic %s' % (clear_cmd))
+            run('python manage.py collectstatic %s --settings=ateoto.settings' % (clear_cmd))
 
 def apache(cmd):
     sudo('invoke-rc.d apache2 %s' % cmd)
