@@ -135,7 +135,6 @@ BROKER_TRANSPORT_OPTIONS = {
 
 #south options
 SOUTH_MIGRATION_MODULES = {
-    'ateoto_coffee': 'ateoto.migrations.ateoto_coffee',
     'ateoto_recipe': 'ateoto.migrations.ateoto_recipe',
 }
 
