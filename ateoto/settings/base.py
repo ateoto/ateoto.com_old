@@ -108,7 +108,8 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'storages',
     'south',
-    #'ateoto_recipe',
+    'ateoto_cupping',
+    'taggit',
     'djcelery',
     'django.contrib.admin',
 )
@@ -136,6 +137,8 @@ BROKER_TRANSPORT_OPTIONS = {
 #south options
 SOUTH_MIGRATION_MODULES = {
     'ateoto_recipe': 'ateoto.migrations.ateoto_recipe',
+    'taggit': 'ateoto.migrations.taggit',
+    'ateoto_cupping': 'ateoto.migrations.ateoto_cupping',
 }
 
 
