@@ -24,7 +24,7 @@ def install_requirements():
         with prefix('workon %s' % (env.virtualenv)):
             run('pip install -r requirements.txt')
 
-def collect_static(clear = False)
+def collect_static(clear = False):
     clear_cmd = ''
     if clear: clear_cmd = '-c'
     with cd(env.deploy_dir):
