@@ -1,4 +1,9 @@
 ateoto.com
 ==========
 
-I'm not exactly sure how this is going to work.
+About
+-----
+
+This is the code behind `ateoto.com`_, I deploy directly from the master branch of this repo.
+
+.. _ateoto.com: http://ateoto.com/
