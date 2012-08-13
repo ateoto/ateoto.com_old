@@ -108,7 +108,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'storages',
     'south',
-    'ateoto_recipe',
+    #'ateoto_recipe',
     'djcelery',
     'django.contrib.admin',
 )

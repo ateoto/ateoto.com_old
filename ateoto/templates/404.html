@@ -1,11 +1,13 @@
 {% extends "base.html" %}
+
+{% load static from staticfiles %}
+
 {% block title %}{{ block.super }} | Error {% endblock title %}
 
+{% block content %}
+<img src="{% static "img/404.jpg" %}" />
 
+<p>I have no idea what you are talking about.</p>
 
-     <link rel="stylesheet" href="{% static "css/main.css" %}" type="text/css" media="screen" />
-     
-     {% block content %}
-     <img src={% static "img/404.jpg" %}" />
-     {% endblock content %}
+{% endblock content %}
 
