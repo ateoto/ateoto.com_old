@@ -9,7 +9,7 @@ DATABASES = {
         'NAME': SECRETS['prod_db_name'],
         'USER': SECRETS['prod_db_user'],
         'PASSWORD': SECRETS['prod_db_pass'],
-        'HOST': '',
+        'HOST': 'localhost',
         'PORT': '',
     }
 }
