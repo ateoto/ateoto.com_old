@@ -23,6 +23,8 @@ def install_requirements():
     with cd(env.deploy_dir):
         with prefix('workon %s' % (env.virtualenv)):
             run('pip install -r requirements.txt')
+            run('python manage.py migrate --settings=ateoto.settings')
+            run('python manage.py syncdb --settings=ateoto.settings')
 
 def collect_static(clear = False):
     clear_cmd = ''
