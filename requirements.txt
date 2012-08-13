@@ -8,6 +8,11 @@ pycrypto>=2.6
 ssh>=1.7.14
 wsgiref>=0.1.2
 psycopg2>=2.4.5
+amqplib>=1.0.2
+billiard>=2.7.3.12
+celery>=3.0.5
+django-celery>=3.0.4
+kombu>=2.3.2
 
 -e git+https://github.com/Ateoto/django-ateoto-recipe.git#egg=django-ateoto-recipe
 -e git+https://github.com/Ateoto/django-ateoto-cupping.git#egg=django-ateoto-cupping
