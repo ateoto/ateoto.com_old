@@ -1,0 +1,7 @@
+*.log
+*.pot
+*.pyc
+*.db
+_build
+secrets.json
+env/
