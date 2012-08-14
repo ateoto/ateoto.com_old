@@ -112,6 +112,7 @@ INSTALLED_APPS = (
     'taggit',
     'djcelery',
     'django.contrib.admin',
+    'ateoto_dayboard',
 )
 
 #storages options
@@ -141,6 +142,8 @@ SOUTH_MIGRATION_MODULES = {
     'ateoto_cupping': 'ateoto.migrations.ateoto_cupping',
 }
 
+GOOGLE_OAUTH2_CLIENT_ID = '498815734136.apps.googleusercontent.com'
+GOOGLE_OAUTH2_CLIENT_SECRET = SECRETS['google_oauth2_client_secret']
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to

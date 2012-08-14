@@ -13,7 +13,12 @@ billiard>=2.7.3.12
 celery>=3.0.5
 django-celery>=3.0.4
 kombu>=2.3.2
+requests>=0.13.6
+requests-oauth2>=0.2.0
+
+
 
 -e git+https://github.com/hcarvalhoalves/django-taggit.git#egg=django-taggit
 -e git+https://github.com/Ateoto/django-ateoto-recipe.git#egg=django-ateoto-recipe
 -e git+https://github.com/Ateoto/django-ateoto-cupping.git#egg=django-ateoto-cupping
+-e git+https://github.com/Ateoto/django-ateoto-dayboard.git#django-ateoto-dayboard
