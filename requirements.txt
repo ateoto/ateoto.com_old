@@ -19,5 +19,5 @@ requests-oauth2>=0.2.0
 -e git+https://github.com/hcarvalhoalves/django-taggit.git#egg=django-taggit
 -e git+https://github.com/Ateoto/django-ateoto-recipe.git#egg=django-ateoto-recipe
 -e git+https://github.com/Ateoto/django-ateoto-tasting.git#egg=django-ateoto-tasting
--e git+https://github.com/Ateoto/djanog-ateoto-oauth2.git#egg=django-ateoto-oauth2
+-e git+https://github.com/Ateoto/django-ateoto-oauth2.git#egg=django-ateoto-oauth2
 -e git+https://github.com/Ateoto/django-ateoto-dayboard.git#egg=django-ateoto-dayboard
