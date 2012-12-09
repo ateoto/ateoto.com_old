@@ -108,7 +108,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'storages',
     'south',
-    'ateoto_cupping',
+    'ateoto_tasting',
     'taggit',
     'djcelery',
     'django.contrib.admin',
