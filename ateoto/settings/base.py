@@ -113,6 +113,7 @@ INSTALLED_APPS = (
     'djcelery',
     'django.contrib.admin',
     'ateoto_dayboard',
+    'character_builder',
 )
 
 #storages options

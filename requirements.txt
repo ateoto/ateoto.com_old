@@ -21,3 +21,4 @@ requests-oauth2>=0.2.0
 -e git+https://github.com/Ateoto/django-ateoto-tasting.git#egg=django-ateoto-tasting
 -e git+https://github.com/Ateoto/django-ateoto-oauth2.git#egg=django-ateoto-oauth2
 -e git+https://github.com/Ateoto/django-ateoto-dayboard.git#egg=django-ateoto-dayboard
+-e git+https://github.com/Ateoto/character-builder.git#egg=character-builder
