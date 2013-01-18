@@ -3,7 +3,7 @@ import json
 
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir))
 
-SECRETS = json.load(open(os.path.join(PROJECT_ROOT, 'settings','secrets.json')))
+SECRETS = json.load(open(os.path.join(PROJECT_ROOT, 'settings', 'secrets.json')))
 
 DEBUG = False
 TEMPLATE_DEBUG = DEBUG
@@ -54,7 +54,7 @@ STATIC_ROOT = ''
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
-STATIC_URL = '/static/'
+STATIC_URL = ''
 
 # Additional locations of static files
 STATICFILES_DIRS = (
