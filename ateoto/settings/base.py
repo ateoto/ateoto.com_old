@@ -108,8 +108,8 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'storages',
     'south',
-    'ateoto_tasting',
-    'taggit',
+    #'ateoto_tasting',
+    #'taggit',
     'djcelery',
     'grappelli',
     'django.contrib.admin',
@@ -143,6 +143,7 @@ SOUTH_MIGRATION_MODULES = {
     'ateoto_recipe': 'ateoto.migrations.ateoto_recipe',
     'taggit': 'ateoto.migrations.taggit',
     'ateoto_cupping': 'ateoto.migrations.ateoto_cupping',
+    'character_builder': 'ateoto.migrations.character_builder',
 }
 
 GOOGLE_OAUTH2_CLIENT_ID = '498815734136.apps.googleusercontent.com'
