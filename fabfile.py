@@ -28,10 +28,10 @@ def install_requirements():
 
 def collect_static(clear = False):
     clear_cmd = ''
-    if clear: clear_cmd = '-c'
+    if clear: clear_cmd = '--clear'
     with cd(env.deploy_dir):
         with prefix('workon %s' % (env.virtualenv)):
-            run('python manage.py collectstatic %s --settings=ateoto.settings' % (clear_cmd))
+            run('python manage.py collectstatic --noinput %s --settings=ateoto.settings' % (clear_cmd))
 
 def apache(cmd):
     sudo('invoke-rc.d apache2 %s' % cmd)
