@@ -111,9 +111,11 @@ INSTALLED_APPS = (
     'ateoto_tasting',
     'taggit',
     'djcelery',
+    'grappelli',
     'django.contrib.admin',
     'ateoto_dayboard',
     'character_builder',
+    'tastypie',
 )
 
 #storages options
