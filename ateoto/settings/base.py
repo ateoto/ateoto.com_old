@@ -116,6 +116,7 @@ INSTALLED_APPS = (
     'ateoto_dayboard',
     'character_builder',
     'tastypie',
+    'crispy_forms',
 )
 
 #storages options
