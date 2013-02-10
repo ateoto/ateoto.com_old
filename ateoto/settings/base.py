@@ -146,6 +146,7 @@ SOUTH_MIGRATION_MODULES = {
     'taggit': 'ateoto.migrations.taggit',
     'ateoto_cupping': 'ateoto.migrations.ateoto_cupping',
     'character_builder': 'ateoto.migrations.character_builder',
+    'dm': 'ateoto.migrations.dm',
 }
 
 GOOGLE_OAUTH2_CLIENT_ID = '498815734136.apps.googleusercontent.com'
