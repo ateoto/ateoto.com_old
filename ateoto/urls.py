@@ -10,4 +10,5 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
     url(r'^grappelli/', include('grappelli.urls')),
     url(r'^DnD/', include('character_builder.urls')),
+    url(r'^dm/', include('dm.urls')),
 )

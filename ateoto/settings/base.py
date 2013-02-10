@@ -117,6 +117,7 @@ INSTALLED_APPS = (
     'character_builder',
     'tastypie',
     'crispy_forms',
+    'dm',
 )
 
 #storages options
