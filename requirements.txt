@@ -15,10 +15,19 @@ django-celery>=3.0.4
 kombu>=2.3.2
 requests>=0.13.6
 requests-oauth2>=0.2.0
+django-crispy-forms==1.2.3
+django-debug-toolbar==0.9.4
+django-grappelli==2.4.3
+django-model-utils==1.2.0
+mimeparse==0.1.3
+python-dateutil==2.1
+six==1.2.0
+wsgiref==0.1.2
 
 -e git+https://github.com/hcarvalhoalves/django-taggit.git#egg=django-taggit
 -e git+https://github.com/Ateoto/django-ateoto-recipe.git#egg=django-ateoto-recipe
 -e git+https://github.com/Ateoto/django-ateoto-tasting.git#egg=django-ateoto-tasting
 -e git+https://github.com/Ateoto/django-ateoto-oauth2.git#egg=django-ateoto-oauth2
 -e git+https://github.com/Ateoto/django-ateoto-dayboard.git#egg=django-ateoto-dayboard
+-e git+https://github.com/toastdriven/django-tastypie.git#egg=django-tastypie
 -e git+https://github.com/Ateoto/character-builder.git#egg=character-builder
