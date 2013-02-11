@@ -22,6 +22,7 @@ django-model-utils==1.2.0
 mimeparse==0.1.3
 python-dateutil==2.1
 six==1.2.0
+django-cors-headers==0.05
 
 -e git+https://github.com/hcarvalhoalves/django-taggit.git#egg=django-taggit
 -e git+https://github.com/Ateoto/django-ateoto-recipe.git#egg=django-ateoto-recipe

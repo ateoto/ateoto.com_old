@@ -86,9 +86,12 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
+
+CSRF_COOKIE_DOMAIN = '.ateoto.com'
 
 ROOT_URLCONF = 'ateoto.urls'
 
@@ -118,7 +121,17 @@ INSTALLED_APPS = (
     'tastypie',
     'crispy_forms',
     'dm',
+    'corsheaders',
 )
+
+#corsheaders options
+CORS_ORIGIN_WHITELIST = (
+    'ateoto.com',
+    'static.ateoto.com',
+    'dev-static.ateoto.com'
+)
+
+CORS_ALLOW_CREDENTIALS = True
 
 #storages options
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
