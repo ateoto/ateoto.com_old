@@ -27,6 +27,6 @@ six==1.2.0
 -e git+https://github.com/Ateoto/django-ateoto-recipe.git#egg=django-ateoto-recipe
 -e git+https://github.com/Ateoto/django-ateoto-tasting.git#egg=django-ateoto-tasting
 -e git+https://github.com/Ateoto/django-ateoto-dayboard.git#egg=django-ateoto-dayboard
--e git+https://github.com/toastdriven/django-tastypie.git@ad5128a4f72b7b6ab9bf04e3f13d1bb6b97b32d7#egg=django-tastypie
+-e git+https://github.com/toastdriven/django-tastypie.git#egg=django-tastypie
 -e git+https://github.com/Ateoto/django-character-builder.git#egg=django-character-builder
 -e git+https://github.com/Ateoto/django-dm.git#egg=django-dm
