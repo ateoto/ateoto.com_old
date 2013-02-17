@@ -71,10 +71,18 @@ class Migration(SchemaMigration):
         ))
         db.send_create_signal('character_builder', ['DefenseMod'])
 
+        # Adding model 'SpeedMod'
+        db.create_table('character_builder_speedmod', (
+            ('modifier_ptr', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['character_builder.Modifier'], unique=True, primary_key=True)),
+            ('value', self.gf('django.db.models.fields.IntegerField')()),
+        ))
+        db.send_create_signal('character_builder', ['SpeedMod'])
+
         # Adding model 'Role'
         db.create_table('character_builder_role', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('name', self.gf('django.db.models.fields.CharField')(max_length=50)),
+            ('flavor', self.gf('django.db.models.fields.TextField')(blank=True)),
         ))
         db.send_create_signal('character_builder', ['Role'])
 
@@ -146,12 +154,13 @@ class Migration(SchemaMigration):
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('name', self.gf('django.db.models.fields.CharField')(max_length=50)),
             ('source', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['character_builder.Source'])),
-            ('average_height_text', self.gf('django.db.models.fields.CharField')(max_length=50)),
-            ('average_weight_text', self.gf('django.db.models.fields.CharField')(max_length=50)),
+            ('average_height_text', self.gf('django.db.models.fields.CharField')(max_length=50, blank=True)),
+            ('average_weight_text', self.gf('django.db.models.fields.CharField')(max_length=50, blank=True)),
             ('size', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['character_builder.Size'])),
             ('speed', self.gf('django.db.models.fields.IntegerField')()),
             ('vision', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['character_builder.Vision'])),
             ('description', self.gf('django.db.models.fields.TextField')()),
+            ('playable', self.gf('django.db.models.fields.BooleanField')(default=False)),
         ))
         db.send_create_signal('character_builder', ['Race'])
 
@@ -299,13 +308,39 @@ class Migration(SchemaMigration):
         ))
         db.send_create_signal('character_builder', ['CurrencyExchange'])
 
+        # Adding model 'Price'
+        db.create_table('character_builder_price', (
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('currency', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['character_builder.Currency'])),
+            ('value', self.gf('django.db.models.fields.IntegerField')()),
+        ))
+        db.send_create_signal('character_builder', ['Price'])
+
         # Adding model 'Item'
         db.create_table('character_builder_item', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('name', self.gf('django.db.models.fields.CharField')(max_length=100)),
             ('source', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['character_builder.Source'])),
+            ('weight', self.gf('django.db.models.fields.IntegerField')()),
+            ('price', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['character_builder.Price'])),
         ))
         db.send_create_signal('character_builder', ['Item'])
+
+        # Adding model 'ArmorItem'
+        db.create_table('character_builder_armoritem', (
+            ('item_ptr', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['character_builder.Item'], unique=True, primary_key=True)),
+            ('armor_type', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['character_builder.ArmorType'])),
+            ('armor_modifier', self.gf('django.db.models.fields.related.ForeignKey')(related_name='+', to=orm['character_builder.DefenseMod'])),
+        ))
+        db.send_create_signal('character_builder', ['ArmorItem'])
+
+        # Adding M2M table for field penalties on 'ArmorItem'
+        db.create_table('character_builder_armoritem_penalties', (
+            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
+            ('armoritem', models.ForeignKey(orm['character_builder.armoritem'], null=False)),
+            ('modifier', models.ForeignKey(orm['character_builder.modifier'], null=False))
+        ))
+        db.create_unique('character_builder_armoritem_penalties', ['armoritem_id', 'modifier_id'])
 
         # Adding model 'ClassType'
         db.create_table('character_builder_classtype', (
@@ -547,13 +582,6 @@ class Migration(SchemaMigration):
         ))
         db.create_unique('character_builder_featarmororarmorprereq_allowed_armors', ['featarmororarmorprereq_id', 'armortype_id'])
 
-        # Adding model 'PowerType'
-        db.create_table('character_builder_powertype', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('name', self.gf('django.db.models.fields.CharField')(max_length=50)),
-        ))
-        db.send_create_signal('character_builder', ['PowerType'])
-
         # Adding model 'PowerKeyword'
         db.create_table('character_builder_powerkeyword', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
@@ -561,22 +589,69 @@ class Migration(SchemaMigration):
         ))
         db.send_create_signal('character_builder', ['PowerKeyword'])
 
+        # Adding model 'PowerType'
+        db.create_table('character_builder_powertype', (
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('name', self.gf('django.db.models.fields.CharField')(max_length=50)),
+        ))
+        db.send_create_signal('character_builder', ['PowerType'])
+
+        # Adding model 'PowerUsage'
+        db.create_table('character_builder_powerusage', (
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('name', self.gf('django.db.models.fields.CharField')(max_length=50)),
+        ))
+        db.send_create_signal('character_builder', ['PowerUsage'])
+
+        # Adding model 'PowerRange'
+        db.create_table('character_builder_powerrange', (
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('name', self.gf('django.db.models.fields.CharField')(max_length=50)),
+        ))
+        db.send_create_signal('character_builder', ['PowerRange'])
+
+        # Adding model 'ActionType'
+        db.create_table('character_builder_actiontype', (
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('name', self.gf('django.db.models.fields.CharField')(max_length=50)),
+        ))
+        db.send_create_signal('character_builder', ['ActionType'])
+
         # Adding model 'Power'
         db.create_table('character_builder_power', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('name', self.gf('django.db.models.fields.CharField')(max_length=100)),
+            ('name', self.gf('django.db.models.fields.CharField')(max_length=50)),
+            ('flavor', self.gf('django.db.models.fields.TextField')()),
             ('level', self.gf('django.db.models.fields.IntegerField')()),
             ('power_type', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['character_builder.PowerType'])),
-            ('flavor', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
-            ('keywords', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
-            ('target', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
-            ('attack', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
-            ('hit', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
-            ('miss', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
-            ('effect', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
-            ('special', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
+            ('action_type', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['character_builder.ActionType'])),
+            ('range_type', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['character_builder.PowerRange'])),
+            ('range_description', self.gf('django.db.models.fields.TextField')(blank=True)),
+            ('usage', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['character_builder.PowerUsage'])),
+            ('requirement', self.gf('django.db.models.fields.TextField')(blank=True)),
+            ('target', self.gf('django.db.models.fields.TextField')(blank=True)),
+            ('attack', self.gf('django.db.models.fields.TextField')(blank=True)),
+            ('hit', self.gf('django.db.models.fields.TextField')(blank=True)),
+            ('hit_modifier', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['character_builder.Ability'], null=True, blank=True)),
+            ('secondary_attack', self.gf('django.db.models.fields.TextField')(blank=True)),
+            ('secondary_hit', self.gf('django.db.models.fields.TextField')(blank=True)),
+            ('secondary_hit_modifier', self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name='secondary_hit_modifier', null=True, to=orm['character_builder.Ability'])),
+            ('special', self.gf('django.db.models.fields.TextField')(blank=True)),
+            ('miss', self.gf('django.db.models.fields.TextField')(blank=True)),
+            ('secondary_target', self.gf('django.db.models.fields.TextField')(blank=True)),
+            ('effect', self.gf('django.db.models.fields.TextField')(blank=True)),
+            ('sustain', self.gf('django.db.models.fields.TextField')(blank=True)),
+            ('sustain_action', self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name='sustain_action', null=True, to=orm['character_builder.ActionType'])),
         ))
         db.send_create_signal('character_builder', ['Power'])
+
+        # Adding M2M table for field keywords on 'Power'
+        db.create_table('character_builder_power_keywords', (
+            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
+            ('power', models.ForeignKey(orm['character_builder.power'], null=False)),
+            ('powerkeyword', models.ForeignKey(orm['character_builder.powerkeyword'], null=False))
+        ))
+        db.create_unique('character_builder_power_keywords', ['power_id', 'powerkeyword_id'])
 
         # Adding model 'ClassPower'
         db.create_table('character_builder_classpower', (
@@ -673,6 +748,15 @@ class Migration(SchemaMigration):
         ))
         db.send_create_signal('character_builder', ['CharacterSkill'])
 
+        # Adding model 'CharacterEquipment'
+        db.create_table('character_builder_characterequipment', (
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('character', self.gf('django.db.models.fields.related.ForeignKey')(related_name='equipment', to=orm['character_builder.Character'])),
+            ('item', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['character_builder.Item'])),
+            ('is_equipped', self.gf('django.db.models.fields.BooleanField')(default=False)),
+        ))
+        db.send_create_signal('character_builder', ['CharacterEquipment'])
+
         # Adding model 'CharacterFeat'
         db.create_table('character_builder_characterfeat', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
@@ -716,6 +800,9 @@ class Migration(SchemaMigration):
 
         # Deleting model 'DefenseMod'
         db.delete_table('character_builder_defensemod')
+
+        # Deleting model 'SpeedMod'
+        db.delete_table('character_builder_speedmod')
 
         # Deleting model 'Role'
         db.delete_table('character_builder_role')
@@ -798,8 +885,17 @@ class Migration(SchemaMigration):
         # Deleting model 'CurrencyExchange'
         db.delete_table('character_builder_currencyexchange')
 
+        # Deleting model 'Price'
+        db.delete_table('character_builder_price')
+
         # Deleting model 'Item'
         db.delete_table('character_builder_item')
+
+        # Deleting model 'ArmorItem'
+        db.delete_table('character_builder_armoritem')
+
+        # Removing M2M table for field penalties on 'ArmorItem'
+        db.delete_table('character_builder_armoritem_penalties')
 
         # Deleting model 'ClassType'
         db.delete_table('character_builder_classtype')
@@ -891,14 +987,26 @@ class Migration(SchemaMigration):
         # Removing M2M table for field allowed_armors on 'FeatArmorOrArmorPrereq'
         db.delete_table('character_builder_featarmororarmorprereq_allowed_armors')
 
-        # Deleting model 'PowerType'
-        db.delete_table('character_builder_powertype')
-
         # Deleting model 'PowerKeyword'
         db.delete_table('character_builder_powerkeyword')
 
+        # Deleting model 'PowerType'
+        db.delete_table('character_builder_powertype')
+
+        # Deleting model 'PowerUsage'
+        db.delete_table('character_builder_powerusage')
+
+        # Deleting model 'PowerRange'
+        db.delete_table('character_builder_powerrange')
+
+        # Deleting model 'ActionType'
+        db.delete_table('character_builder_actiontype')
+
         # Deleting model 'Power'
         db.delete_table('character_builder_power')
+
+        # Removing M2M table for field keywords on 'Power'
+        db.delete_table('character_builder_power_keywords')
 
         # Deleting model 'ClassPower'
         db.delete_table('character_builder_classpower')
@@ -929,6 +1037,9 @@ class Migration(SchemaMigration):
 
         # Deleting model 'CharacterSkill'
         db.delete_table('character_builder_characterskill')
+
+        # Deleting model 'CharacterEquipment'
+        db.delete_table('character_builder_characterequipment')
 
         # Deleting model 'CharacterFeat'
         db.delete_table('character_builder_characterfeat')
@@ -980,6 +1091,11 @@ class Migration(SchemaMigration):
             'modifier_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['character_builder.Modifier']", 'unique': 'True', 'primary_key': 'True'}),
             'value': ('django.db.models.fields.IntegerField', [], {})
         },
+        'character_builder.actiontype': {
+            'Meta': {'object_name': 'ActionType'},
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'name': ('django.db.models.fields.CharField', [], {'max_length': '50'})
+        },
         'character_builder.alignment': {
             'Meta': {'object_name': 'Alignment'},
             'description': ('django.db.models.fields.TextField', [], {}),
@@ -990,6 +1106,13 @@ class Migration(SchemaMigration):
             'Meta': {'object_name': 'ArmorClass'},
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '50'})
+        },
+        'character_builder.armoritem': {
+            'Meta': {'object_name': 'ArmorItem', '_ormbases': ['character_builder.Item']},
+            'armor_modifier': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'+'", 'to': "orm['character_builder.DefenseMod']"}),
+            'armor_type': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['character_builder.ArmorType']"}),
+            'item_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['character_builder.Item']", 'unique': 'True', 'primary_key': 'True'}),
+            'penalties': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['character_builder.Modifier']", 'symmetrical': 'False', 'blank': 'True'})
         },
         'character_builder.armortype': {
             'Meta': {'object_name': 'ArmorType'},
@@ -1041,6 +1164,13 @@ class Migration(SchemaMigration):
             'character': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'wealth'", 'to': "orm['character_builder.Character']"}),
             'currency_type': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['character_builder.Currency']"}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'})
+        },
+        'character_builder.characterequipment': {
+            'Meta': {'object_name': 'CharacterEquipment'},
+            'character': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'equipment'", 'to': "orm['character_builder.Character']"}),
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'is_equipped': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'item': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['character_builder.Item']"})
         },
         'character_builder.characterfeat': {
             'Meta': {'object_name': 'CharacterFeat'},
@@ -1244,7 +1374,9 @@ class Migration(SchemaMigration):
             'Meta': {'object_name': 'Item'},
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
-            'source': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['character_builder.Source']"})
+            'price': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['character_builder.Price']"}),
+            'source': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['character_builder.Source']"}),
+            'weight': ('django.db.models.fields.IntegerField', [], {})
         },
         'character_builder.language': {
             'Meta': {'object_name': 'Language'},
@@ -1264,21 +1396,38 @@ class Migration(SchemaMigration):
         },
         'character_builder.power': {
             'Meta': {'object_name': 'Power'},
-            'attack': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
-            'effect': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
-            'flavor': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
-            'hit': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
+            'action_type': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['character_builder.ActionType']"}),
+            'attack': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
+            'effect': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
+            'flavor': ('django.db.models.fields.TextField', [], {}),
+            'hit': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
+            'hit_modifier': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['character_builder.Ability']", 'null': 'True', 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'keywords': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
+            'keywords': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['character_builder.PowerKeyword']", 'symmetrical': 'False'}),
             'level': ('django.db.models.fields.IntegerField', [], {}),
-            'miss': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
+            'miss': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
+            'name': ('django.db.models.fields.CharField', [], {'max_length': '50'}),
             'power_type': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['character_builder.PowerType']"}),
-            'special': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
-            'target': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'})
+            'range_description': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
+            'range_type': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['character_builder.PowerRange']"}),
+            'requirement': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
+            'secondary_attack': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
+            'secondary_hit': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
+            'secondary_hit_modifier': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'secondary_hit_modifier'", 'null': 'True', 'to': "orm['character_builder.Ability']"}),
+            'secondary_target': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
+            'special': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
+            'sustain': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
+            'sustain_action': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'sustain_action'", 'null': 'True', 'to': "orm['character_builder.ActionType']"}),
+            'target': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
+            'usage': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['character_builder.PowerUsage']"})
         },
         'character_builder.powerkeyword': {
             'Meta': {'object_name': 'PowerKeyword'},
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'name': ('django.db.models.fields.CharField', [], {'max_length': '50'})
+        },
+        'character_builder.powerrange': {
+            'Meta': {'object_name': 'PowerRange'},
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '50'})
         },
@@ -1287,15 +1436,27 @@ class Migration(SchemaMigration):
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '50'})
         },
+        'character_builder.powerusage': {
+            'Meta': {'object_name': 'PowerUsage'},
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'name': ('django.db.models.fields.CharField', [], {'max_length': '50'})
+        },
+        'character_builder.price': {
+            'Meta': {'object_name': 'Price'},
+            'currency': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['character_builder.Currency']"}),
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'value': ('django.db.models.fields.IntegerField', [], {})
+        },
         'character_builder.race': {
             'Meta': {'ordering': "['name']", 'object_name': 'Race'},
-            'average_height_text': ('django.db.models.fields.CharField', [], {'max_length': '50'}),
-            'average_weight_text': ('django.db.models.fields.CharField', [], {'max_length': '50'}),
+            'average_height_text': ('django.db.models.fields.CharField', [], {'max_length': '50', 'blank': 'True'}),
+            'average_weight_text': ('django.db.models.fields.CharField', [], {'max_length': '50', 'blank': 'True'}),
             'description': ('django.db.models.fields.TextField', [], {}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'languages': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['character_builder.Language']", 'symmetrical': 'False'}),
             'modifiers': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['character_builder.Modifier']", 'symmetrical': 'False', 'blank': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '50'}),
+            'playable': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'size': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['character_builder.Size']"}),
             'source': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['character_builder.Source']"}),
             'speed': ('django.db.models.fields.IntegerField', [], {}),
@@ -1339,6 +1500,7 @@ class Migration(SchemaMigration):
         },
         'character_builder.role': {
             'Meta': {'object_name': 'Role'},
+            'flavor': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '50'})
         },
@@ -1365,6 +1527,11 @@ class Migration(SchemaMigration):
             'Meta': {'ordering': "['name']", 'object_name': 'Source'},
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '50'})
+        },
+        'character_builder.speedmod': {
+            'Meta': {'object_name': 'SpeedMod', '_ormbases': ['character_builder.Modifier']},
+            'modifier_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['character_builder.Modifier']", 'unique': 'True', 'primary_key': 'True'}),
+            'value': ('django.db.models.fields.IntegerField', [], {})
         },
         'character_builder.vision': {
             'Meta': {'object_name': 'Vision'},
