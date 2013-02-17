@@ -113,15 +113,15 @@ INSTALLED_APPS = (
     'south',
     #'ateoto_tasting',
     #'taggit',
-    'djcelery',
+    #'djcelery',
     'grappelli',
     'django.contrib.admin',
-    'ateoto_dayboard',
+    #'ateoto_dayboard',
     'character_builder',
     'tastypie',
     'crispy_forms',
     'dm',
-    'corsheaders',
+    #'corsheaders',
 )
 
 #corsheaders options
