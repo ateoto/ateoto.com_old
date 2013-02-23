@@ -14,6 +14,9 @@ DATABASES = {
     }
 }
 
+ALLOWED_HOSTS = [
+    '.ateoto.com',
+]
 
 try:
     from local_settings import *
