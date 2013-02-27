@@ -1,4 +1,4 @@
-Django>=1.4.1
+django>=1.5
 Fabric>=1.4.3
 South>=0.7.5
 boto>=2.5.2
