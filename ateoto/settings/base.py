@@ -122,6 +122,7 @@ INSTALLED_APPS = (
     'crispy_forms',
     'dm',
     #'corsheaders',
+    'nemik',
 )
 
 #corsheaders options

@@ -30,3 +30,4 @@ six==1.2.0
 -e git+https://github.com/toastdriven/django-tastypie.git#egg=django-tastypie
 -e git+https://github.com/Ateoto/django-character-builder.git#egg=django-character-builder
 -e git+https://github.com/Ateoto/django-dm.git#egg=django-dm
+-e git+https://github.com/Ateoto/django-nemik.git#egg=django-nemik
