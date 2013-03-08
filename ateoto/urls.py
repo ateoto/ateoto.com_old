@@ -12,4 +12,6 @@ urlpatterns = patterns('',
     url(r'^DnD/', include('character_builder.urls')),
     url(r'^dm/', include('dm.urls')),
     url(r'^iseharr/', include('iseharr.urls')),
+	url(r'^accounts/login/$', 'django.contrib.auth.views.login'),
+
 )
