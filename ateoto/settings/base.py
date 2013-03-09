@@ -86,7 +86,6 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
@@ -111,25 +110,13 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'storages',
     'south',
-    #'ateoto_tasting',
-    #'taggit',
-    #'djcelery',
     'grappelli',
     'django.contrib.admin',
-    #'ateoto_dayboard',
     'character_builder',
     'tastypie',
     'crispy_forms',
     'dm',
-    #'corsheaders',
     'iseharr',
-)
-
-#corsheaders options
-CORS_ORIGIN_WHITELIST = (
-    'ateoto.com',
-    'static.ateoto.com',
-    'dev-static.ateoto.com'
 )
 
 CORS_ALLOW_CREDENTIALS = True
