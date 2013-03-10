@@ -10,7 +10,7 @@ def deploy():
     update_code()
     install_requirements()
     collect_static()
-    apache('reload')
+    #apache('reload')
 
 
 def update_code(ref=None):
@@ -36,6 +36,12 @@ def collect_static(clear=False):
     with cd(env.deploy_dir):
         with prefix('workon %s' % (env.virtualenv)):
             run('python manage.py collectstatic --noinput %s --settings=ateoto.settings' % (clear_cmd))
+
+
+def gunicorn():
+    with cd(env.deploy_dir):
+        with prefix('workon %s' % (env.virtualenv)):
+            run('gunicorn ateoto.wsgi:application --daemon')
 
 
 def apache(cmd):
