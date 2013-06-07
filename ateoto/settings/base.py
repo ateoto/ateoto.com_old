@@ -1,10 +1,9 @@
 from unipath import Path
-import os
 import json
 
-PROJECT_ROOT = Path(__file__).ancestor(3)
+PROJECT_ROOT = Path(__file__).ancestor(2)
 
-SECRETS = json.load(open(os.path.join(PROJECT_ROOT, 'settings', 'secrets.json')))
+SECRETS = json.load(open(PROJECT_ROOT.child('settings', 'secrets.json')))
 
 DEBUG = False
 TEMPLATE_DEBUG = DEBUG
@@ -67,7 +66,7 @@ STATICFILES_DIRS = (
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-#    'django.contrib.staticfiles.finders.DefaultStorageFinder',
+    # 'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
 STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
@@ -78,7 +77,7 @@ SECRET_KEY = SECRETS['secret_key']
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
-#     'django.template.loaders.eggs.Loader',
+    # 'django.template.loaders.eggs.Loader',
 )
 
 MIDDLEWARE_CLASSES = (
