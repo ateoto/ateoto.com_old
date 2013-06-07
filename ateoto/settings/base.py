@@ -1,7 +1,8 @@
+from unipath import Path
 import os
 import json
 
-PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir))
+PROJECT_ROOT = Path(__file__).ancestor(3)
 
 SECRETS = json.load(open(os.path.join(PROJECT_ROOT, 'settings', 'secrets.json')))
 
@@ -58,7 +59,7 @@ STATIC_URL = 'http://static.ateoto.com/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
-    os.path.join(PROJECT_ROOT, 'static'),
+    PROJECT_ROOT.child("static"),
 )
 
 # List of finder classes that know how to find static files in
@@ -98,7 +99,7 @@ ROOT_URLCONF = 'ateoto.urls'
 WSGI_APPLICATION = 'ateoto.wsgi.application'
 
 TEMPLATE_DIRS = (
-    os.path.join(PROJECT_ROOT, 'templates'),
+    PROJECT_ROOT.child("templates"),
 )
 
 INSTALLED_APPS = (

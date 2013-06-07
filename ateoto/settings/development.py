@@ -16,8 +16,3 @@ DATABASES = {
 
 AWS_S3_CUSTOM_DOMAIN = 'dev-static.ateoto.com'
 AWS_STORAGE_BUCKET_NAME = SECRETS['aws_storage_dev_bucket_name']
-
-try:
-    from local_settings import *
-except:
-    pass
