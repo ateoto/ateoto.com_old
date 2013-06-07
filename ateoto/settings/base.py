@@ -153,6 +153,10 @@ SOUTH_MIGRATION_MODULES = {
 GOOGLE_OAUTH2_CLIENT_ID = '498815734136.apps.googleusercontent.com'
 GOOGLE_OAUTH2_CLIENT_SECRET = SECRETS['google_oauth2_client_secret']
 
+# Social Auth Settings
+FACEBOOK_APP_ID = SECRETS['facebook_app_id']
+FACEBOOK_API_SECRET = SECRETS['facebook_api_secret']
+
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
 # the site admins on every HTTP 500 error when DEBUG=False.
