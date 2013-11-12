@@ -108,15 +108,10 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.admin',
     'storages',
     'south',
-    'grappelli',
-    'django.contrib.admin',
-    'character_builder',
-    'tastypie',
-    'crispy_forms',
-    'dm',
-    'iseharr',
+    'taggit',
 )
 
 CORS_ALLOW_CREDENTIALS = True
